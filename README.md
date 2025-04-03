@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Interactive Birthday Card
 
-## Getting Started
+An elegant, interactive digital birthday card built with Next.js and React, featuring smooth animations and a modern design.
 
-First, run the development server:
+<!-- ![Birthday Card Preview](/Assets/preview.png) -->
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ✨ Features
+
+- **Animated Card Interaction**: Beautiful 3D flip animation with smooth transitions
+- **Responsive Design**: Works seamlessly on both desktop and mobile devices
+- **Customizable**: Easily change colors, text, and images to personalize the card
+- **Gift Voucher Integration**: Built-in form to claim a special gift voucher
+- **Confetti Effects**: Celebratory animations when opening the card
+- **Modern UI**: Built with Tailwind CSS, shadcn/ui, and Framer Motion
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18.17.0 or later
+- pnpm (recommended) or npm/yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/birthday-card.git
+   cd birthday-card
+   ```
+
+2. Install dependencies:
+   ```bash
+   pnpm install
+   # or
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Run the development server:
+   ```bash
+   pnpm dev
+   # or
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the card.
+
+## 🎨 Customization
+
+To personalize the birthday card, you can modify the following:
+
+### Basic Settings in `app/page.tsx`
+
+```tsx
+<EnhancedBirthdayCard 
+  frontColor="#000000"
+  backColor="#000000"
+  title="Happy 30th Birthday!"
+  message="Your personal message here"
+  recipientName="Recipient Name"
+  senderName="Your Name"
+/>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Asset Customization
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Replace the images in the `/public/Assets/` directory:
+   - `Cake.png` - Birthday cake icon
+   - `Gift.png` - Gift icon
+   - `framed.png` - Decorative frame
+   - Background image (if used)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Advanced Customization
 
-## Learn More
+For more advanced customizations, you can edit the following files:
 
-To learn more about Next.js, take a look at the following resources:
+- `app/components/EnhancedBirthdayCard.tsx` - Main component logic and layout
+- `app/components/Gifter.tsx` - Gift voucher form component
+- `app/globals.css` - Global styles and animations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📧 Email Integration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The application includes an email service for sending gift voucher claims. To set up:
 
-## Deploy on Vercel
+1. Configure environment variables for your email service:
+   ```
+   NEXT_PUBLIC_EMAIL_USER=your-email@gmail.com
+   NEXT_PUBLIC_EMAIL_PASS=your-app-password
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. The email service uses Nodemailer with Gmail by default. You can customize the service in `app/api/send-email/route.ts`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📱 Mobile Considerations
+
+The card is fully responsive and includes specific optimizations for mobile devices:
+
+- Automatic scaling for smaller screens
+- Touch-friendly interactions
+- Mobile-specific animations and layout adjustments
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/)
+- **UI Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **3D Effects**: [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/)
+- **Form Handling**: Custom form implementation
+- **Email Service**: [Nodemailer](https://nodemailer.com/)
+
+## 🌐 Deployment
+
+This application is optimized for deployment on Vercel:
+
+1. Push your repository to GitHub.
+2. Import the repository in [Vercel](https://vercel.com).
+3. Add required environment variables.
+4. Deploy!
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgements
+
+- [Framer Motion](https://www.framer.com/motion/) for the fluid animations
+- [shadcn/ui](https://ui.shadcn.com/) for the beautiful UI components
+- [TailwindCSS](https://tailwindcss.com/) for the utility-first CSS framework
+- [Next.js](https://nextjs.org/) for the React framework
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/yourusername/birthday-card/issues).
+
+## 📝 Contact
+
+If you have any questions or want to reach out to the maintainer, please create an issue in the repository or contact via email at your-email@example.com.
+
+---
+
+Made with ❤️ for someone special
