@@ -138,8 +138,4 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 ## 📝 Contact
 
-If you have any questions or want to reach out to the maintainer, please create an issue in the repository or contact via email at your-email@example.com.
-
----
-
-Made with ❤️ for someone special
+If you have any questions or want to reach out to the maintainer, please create an issue in the repository or contact via email at jayrrdev@gmail.com
