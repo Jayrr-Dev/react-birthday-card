@@ -1,6 +1,5 @@
 'use client'
 
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -12,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import GiftEmailForm from './Gifter';
+
 interface BirthdayCardProps { 
   frontColor?: string;
   backColor?: string;
@@ -45,6 +45,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
   const [hasInteracted, setHasInteracted] = useState(false);
   const [showInnerContent, setShowInnerContent] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Create memoized decorative elements that remain stable across renders
   const decorativeElements = useMemo(() => 
@@ -97,6 +98,17 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
   useEffect(() => {
     setIsClient(true);
     
+    // Check if device is mobile
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkIsMobile();
+    
+    // Add resize listener for responsive adjustments
+    window.addEventListener('resize', checkIsMobile);
+    
     // Load Google Fonts
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500&display=swap';
@@ -105,6 +117,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
     
     return () => {
       document.head.removeChild(link);
+      window.removeEventListener('resize', checkIsMobile);
     };
   }, []);
 
@@ -294,8 +307,8 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
       </div>
     );
   }
+  
   return (
-
     <div className="flex items-center justify-center w-full min-h-screen overflow-hidden p-4">
      
       {/* Fixed black background */}
@@ -308,12 +321,12 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
         {decorativeElements.map(renderDecorativeElement)}
       </div>
 
-      <div className="relative p-4 w-full max-w-lg" style={{ perspective: '1500px', filter: 'blur(0)', zIndex: 10 }}>
+      <div className={`relative p-4 w-full max-w-lg ${isMobile ? 'scale-70' : 'scale-100'}`} style={{ perspective: '1500px', filter: 'blur(0)', zIndex: 10 }}>
         {/* Card Container */}
         <div 
           className="relative w-full aspect-[3/4] cursor-pointer mx-auto"
           style={{ 
-            maxWidth: "400px", 
+            maxWidth: isMobile ? "600px" : "400px", 
             transformStyle: 'preserve-3d',
             perspective: '2000px',
             transformOrigin: 'center center' // Consistent transform origin
@@ -343,7 +356,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="p-8 text-center h-full flex flex-col justify-center items-center"
+                  className={`p-8 text-center h-full flex flex-col justify-center items-center ${isMobile ? 'p-4' : 'p-8'}`}
                   style={{ color: goldColor }} // Gold text color
                 >
                   <motion.div
@@ -353,7 +366,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.2 }}
-                      className="text-4xl mb-8"
+                      className={`${isMobile ? 'text-3xl mb-4' : 'text-4xl mb-8'}`}
                       style={{ 
                         fontFamily: "'Playfair Display', serif",
                         fontWeight: 700,
@@ -369,7 +382,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.3 }}
-                      className="text-xl mb-8"
+                      className={`${isMobile ? 'text-lg mb-4' : 'text-xl mb-8'}`}
                       style={{ 
                         fontFamily: "'Cormorant Garamond', serif",
                         fontWeight: 300,
@@ -384,7 +397,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="pt-6 border-t w-full mt-auto"
+                      className={`pt-6 border-t w-full mt-auto ${isMobile ? 'pt-4' : 'pt-6'}`}
                       style={{
                         borderColor: `${goldColor}40`,
                         fontFamily: "'Montserrat', sans-serif",
@@ -392,13 +405,13 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                       }}
                     >
                       {recipientName && (
-                        <p className="text-lg mb-2" style={{ fontWeight: 300 }}>
+                        <p className={`${isMobile ? 'text-base mb-1' : 'text-lg mb-2'}`} style={{ fontWeight: 300 }}>
                           To: {recipientName}
                         </p>
                       )}
 
                       <p
-                        className="text-lg italic"
+                        className={`italic ${isMobile ? 'text-base' : 'text-lg'}`}
                         style={{ fontFamily: "'Cormorant Garamond', serif" }}
                       >
                         From: {senderName}
@@ -420,17 +433,17 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                               <img
                                 src="/Assets/gift.png"
                                 alt="Gift"
-                                className="w-20 h-20 animate-wiggle hover:animate-wiggle-more animate-infinite z-100"
+                                className={`animate-wiggle hover:animate-wiggle-more animate-infinite z-100 ${isMobile ? 'w-16 h-16' : 'w-20 h-20'}`}
                               />
                             </motion.div>
                           </DialogTrigger>
-                          <DialogContent>
+                          <DialogContent className={`${isMobile ? 'w-[95vw] max-w-lg p-4' : ''}`}>
                             <DialogHeader>
                               <DialogTitle
                                 style={{
                                   fontFamily: "'Playfair Display', serif",
                                   color: goldColor,
-                                  fontSize: '1.5rem',
+                                  fontSize: isMobile ? '1.25rem' : '1.5rem',
                                 }}
                               >
                                 A FREE WEBSITE VOUCHER!
@@ -438,12 +451,12 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                               <DialogDescription
                                 style={{
                                   fontFamily: "'Cormorant Garamond', serif",
-                                  fontSize: '1.1rem',
+                                  fontSize: isMobile ? '1rem' : '1.1rem',
                                 }}
                               >
-                                Claim this voucher, and I'll build you any website you want. Free of charge.
+                                Claim this voucher, and I'll build you any website or webapp you want. Free of charge.
                                 Meaning I'll host it, and build it for you. I'll even grab a reasonably priced domain name for you if you don't have one already. 
-                                Just send me the details of your dream site.  
+                                Just send me the details of your dream site to make it real.  
                                 <br></br>
                                 <br></br>
                                 <div className="text-sm text-gray-500">
@@ -466,7 +479,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
 
           {/* Card Front (flips open) */}
           <motion.div 
-            className="absolute inset-0 rounded-l-xl shadow-lg "
+            className="absolute inset-0 rounded-l-xl shadow-lg"
             style={{ 
               transformStyle: 'preserve-3d',
               backfaceVisibility: 'hidden',
@@ -486,7 +499,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
             whileTap={!isOpen ? { scale: 0.98 } : {}}
           >
             {/* This is a card wrapper with two sides */}
-            <div className="w-full h-full border-r-2 border-b-1 border-gray-400 rounded-r-xl" style={{ transformStyle: 'preserve-3d' }}>
+            <div className="w-full h-full border-r-2 border-b-1 border-gray-400 rounded-r-xl " style={{ transformStyle: 'preserve-3d' }}>
               {/* Front Side Content - visible when card is closed */}
               <div 
                 className="absolute inset-0 rounded-r-xl overflow-hidden"
@@ -542,13 +555,13 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                         ease: "easeInOut" 
                       }}
                       style={{ color: goldColor }} // Gold color for icon
-                      className="mb-6 flex items-center justify-center"
+                      className={`mb-6 flex items-center justify-center ${isMobile ? 'mb-4' : 'mb-6'}`}
                     >
-                      <img src="/Assets/cake.png" alt="Cake" className="w-20 h-20" />
+                      <img src="/Assets/cake.png" alt="Cake" className={`${isMobile ? 'w-16 h-16' : 'w-20 h-20'}`} />
                     </motion.div>
                     
                     <h1 
-                      className="text-4xl mb-2"
+                      className={`mb-2 ${isMobile ? 'text-3xl' : 'text-4xl'}`}
                       style={{ 
                         fontFamily: "'Playfair Display', serif",
                         fontWeight: 700,
@@ -568,14 +581,14 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                       transition={{ delay: 0.2, duration: 1 }}
                     >
                       <motion.div 
-                        className="h-px w-8 rounded-full"
+                        className="h-px rounded-full"
                         initial={{ width: 0 }}
-                        animate={{ width: "32px" }}
+                        animate={{ width: isMobile ? "24px" : "32px" }}
                         transition={{ delay: 0.3, duration: 0.6 }}
                         style={{ backgroundColor: goldColor }}
                       />
                       <div 
-                        className="text-lg" 
+                        className={`${isMobile ? 'text-base' : 'text-lg'}`}
                         style={{ 
                           transform: 'rotate(0deg)', 
                           color: goldColor,
@@ -583,9 +596,9 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                         }}
                       >✦</div>
                       <motion.div 
-                        className="h-px w-8 rounded-full"
+                        className="h-px rounded-full"
                         initial={{ width: 0 }}
-                        animate={{ width: "32px" }}
+                        animate={{ width: isMobile ? "24px" : "32px" }}
                         transition={{ delay: 0.3, duration: 0.6 }}
                         style={{ backgroundColor: goldColor }}
                       />
@@ -593,7 +606,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                     
                     {recipientName && (
                       <motion.p 
-                        className="text-xl mt-4"
+                        className={`mt-4 ${isMobile ? 'text-lg' : 'text-xl'}`}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
@@ -618,10 +631,10 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                         ease: "easeInOut" 
                       }}
                       style={{ color: goldColor }} // Gold color for text
-                      className="absolute bottom-8"
+                      className={`absolute ${isMobile ? 'bottom-6' : 'bottom-8'}`}
                     >
                       <p 
-                        className="text-lg mb-2"
+                        className={`mb-2 ${isMobile ? 'text-base' : 'text-lg'}`}
                         style={{ 
                           fontFamily: "'Montserrat', sans-serif",
                           fontWeight: 300,
@@ -632,8 +645,8 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                       </p>
                       <svg 
                         xmlns="http://www.w3.org/2000/svg" 
-                        width="24" 
-                        height="24" 
+                        width={isMobile ? "20" : "24"} 
+                        height={isMobile ? "20" : "24"} 
                         viewBox="0 0 24 24" 
                         fill="none" 
                         stroke="currentColor" 
@@ -650,36 +663,36 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                   
                   {/* Decorative elements - gold */}
                   <motion.div 
-                    className="absolute top-6 left-6"
+                    className={`absolute ${isMobile ? 'top-4 left-4' : 'top-6 left-6'}`}
                     style={{ color: `${goldColor}90` }} // Gold with slight transparency
                     animate={{ rotate: 360 }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                   >
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width={isMobile ? "30" : "40"} height={isMobile ? "30" : "40"} viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.6-6.3 4.6 2.3-7-6-4.6h7.6z" />
                     </svg>
                   </motion.div>
                   
                   <motion.div 
-                    className="absolute bottom-6 right-6"
+                    className={`absolute ${isMobile ? 'bottom-4 right-4' : 'bottom-6 right-6'}`}
                     style={{ color: `${goldColor}90` }} // Gold with slight transparency
                     animate={{ rotate: -360 }}
                     transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                   >
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width={isMobile ? "24" : "30"} height={isMobile ? "24" : "30"} viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.6-6.3 4.6 2.3-7-6-4.6h7.6z" />
                     </svg>
                   </motion.div>
                   
                   {/* Corner decorations - gold */}
-                  <div className="absolute top-0 left-0 w-16 h-16 overflow-hidden">
-                    <div className="absolute transform rotate-45 w-16 h-16 -top-8 -left-8"
+                  <div className={`absolute top-0 left-0 overflow-hidden ${isMobile ? 'w-12 h-12' : 'w-16 h-16'}`}>
+                    <div className={`absolute transform rotate-45 ${isMobile ? 'w-12 h-12 -top-6 -left-6' : 'w-16 h-16 -top-8 -left-8'}`}
                          style={{ backgroundColor: `${goldColor}30` }} // Gold with transparency
                     ></div>
                   </div>
                   
-                  <div className="absolute bottom-0 right-0 w-16 h-16 overflow-hidden">
-                    <div className="absolute transform rotate-45 w-16 h-16 -bottom-8 -right-8"
+                  <div className={`absolute bottom-0 right-0 overflow-hidden ${isMobile ? 'w-12 h-12' : 'w-16 h-16'}`}>
+                    <div className={`absolute transform rotate-45 ${isMobile ? 'w-12 h-12 -bottom-6 -right-6' : 'w-16 h-16 -bottom-8 -right-8'}`}
                          style={{ backgroundColor: `${goldColor}30` }} // Gold with transparency
                     ></div>
                   </div>
@@ -703,10 +716,9 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                 <img 
                   src="/Assets/framed.png" 
                   alt="Decorative frame" 
-                  className="absolute inset-0 w-full h-full object-cover z-0 scale-90"
+                  className={`absolute inset-0 w-full h-full object-cover z-0 scale-90 `}
                 />
-                
-                <div className="text-center p-6 w-full h-full flex flex-col items-center justify-center relative overflow-hidden"
+                <div className={`text-center w-full h-full flex flex-col items-center justify-center relative overflow-hidden ${isMobile ? 'p-4' : 'p-6'}`}
                      style={{ color: goldColor }} // Gold text color
                 >
                   
@@ -734,7 +746,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                   
                   {/* Simple decorative content for the back */}
                   <div 
-                    className="text-3xl opacity-70" 
+                    className={`opacity-70 ${isMobile ? 'text-2xl' : 'text-3xl'}`}
                     style={{ 
                       color: goldColor,
                       fontFamily: "'Playfair Display', serif",
@@ -765,7 +777,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                     }}
                     animate={{ 
                       y: '120vh', 
-                      x: `calc(${piece.x}% + ${(Math.random() - 0.5) * 200}px)`,
+                      x: `calc(${piece.x}% + ${(Math.random() - 0.5) * (isMobile ? 100 : 200)}px)`,
                       opacity: [1, 1, 0.7, 0],
                       rotate: Math.random() * 720 * (Math.random() > 0.5 ? 1 : -1),
                       scale: [0, 1, 0.8]
@@ -780,8 +792,8 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                       position: 'absolute',
                       top: 0,
                       left: 0,
-                      width: piece.size,
-                      height: piece.size * (Math.random() * 2 + 1),
+                      width: isMobile ? piece.size * 0.7 : piece.size,
+                      height: (isMobile ? piece.size * 0.7 : piece.size) * (Math.random() * 2 + 1),
                       backgroundColor: piece.color,
                       borderRadius: Math.random() > 0.3 ? '50%' : Math.random() > 0.5 ? '0%' : '30%',
                       zIndex: 9999
@@ -798,7 +810,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-8 text-center text-sm py-2 px-4 rounded-full shadow-md mx-auto w-fit"
+          className={`mt-8 text-center text-sm py-2 px-4 rounded-full shadow-md mx-auto w-fit ${isMobile ? 'text-xs py-1 px-3 mt-6' : 'text-sm py-2 px-4 mt-8'}`}
           style={{ 
             backgroundColor: 'rgba(0,0,0,0.7)', 
             color: goldColor,
@@ -815,5 +827,6 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
     </div>
   );
 };
+
 
 export default EnhancedBirthdayCard;
