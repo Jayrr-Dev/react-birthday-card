@@ -431,7 +431,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                               className="relative cursor-pointer"
                             >
                               <img
-                                src="/Assets/gift.png"
+                                src="/Assets/Gift.png"
                                 alt="Gift"
                                 className={`animate-wiggle hover:animate-wiggle-more animate-infinite z-100 ${isMobile ? 'w-16 h-16' : 'w-20 h-20'}`}
                               />
@@ -557,7 +557,7 @@ const EnhancedBirthdayCard: React.FC<BirthdayCardProps> = ({
                       style={{ color: goldColor }} // Gold color for icon
                       className={`mb-6 flex items-center justify-center ${isMobile ? 'mb-4' : 'mb-6'}`}
                     >
-                      <img src="/Assets/cake.png" alt="Cake" className={`${isMobile ? 'w-16 h-16' : 'w-20 h-20'}`} />
+                      <img src="/Assets/Cake.png" alt="Cake" className={`${isMobile ? 'w-16 h-16' : 'w-20 h-20'}`} />
                     </motion.div>
                     
                     <h1 
